@@ -2,7 +2,7 @@ name: Auto Update
 
 on:
   schedule:
-    - cron: "35 0/8 * * *"
+    - cron: "50 0/8 * * *"
 
 jobs:
   update:
@@ -12,7 +12,9 @@ jobs:
         with:
           node-version: 14.x
       - uses: actions/checkout@v2
-      - run: npm run update
+      - run: |
+          yarn
+          yarn run update
       - run: |
           git config user.name 'The Tracker'
           git config user.email ''
