@@ -1,0 +1,27 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Auto Update
+
+on:
+  schedule:
+    - cron: "0 0/8 * * *"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+      - uses: actions/checkout@v2
+      - run: npm run update
+      - run: |
+          git config user.name 'The Tracker'
+          git config user.email ''
+          git add .
+          git commit -m 'auto-update'
+          git remote set-url origin https://SilentDepth:$GITHUB_TOKEN@github.com/SilentDepth/notion-client-src-tracker.git
+          git push origin HEAD:master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
