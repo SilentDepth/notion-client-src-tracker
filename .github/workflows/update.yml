@@ -2,13 +2,13 @@ name: Auto Update
 
 on:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "15 0/8 * * *"
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v2.1.2
         with:
           node-version: 14.x
       - uses: actions/checkout@v2
