@@ -18,9 +18,8 @@ jobs:
       - run: |
           git config user.name 'The Tracker'
           git config user.email ''
-          git add .
-          git commit -m 'auto-update'
           git remote set-url origin https://SilentDepth:$GITHUB_TOKEN@github.com/SilentDepth/notion-client-src-tracker.git
-          git push origin HEAD:master
+          git add .
+          git commit -m 'auto-update' && git push origin HEAD:master || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
