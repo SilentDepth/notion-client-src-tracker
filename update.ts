@@ -4,6 +4,8 @@ import fetch from 'node-fetch'
 import cheerio from 'cheerio'
 import prettier from 'prettier'
 
+const updated: string[] = []
+
 async function update (mode: string, host: string): Promise<void> {
   console.log('Mode:', mode, `(${host})`)
 
@@ -34,6 +36,7 @@ async function update (mode: string, host: string): Promise<void> {
     const formatted = prettier.format(js, await prettier.resolveConfig(await prettier.resolveConfigFile(__filename) as string) ?? undefined)
     fs.writeFileSync(`./${name}.js`, formatted, 'utf-8')
 
+    updated.push(`${mode}-${notionVersion}.${clientVersion}`)
     console.log('✔')
   } else {
     console.log('No update')
@@ -43,3 +46,8 @@ async function update (mode: string, host: string): Promise<void> {
 Promise.resolve()
   .then(() => update('app', 'https://www.notion.so'))
   .then(() => update('dev', 'https://dev.notion.so'))
+  .then(() => {
+    if (updated.length) {
+      fs.writeFileSync('./UPDATED', updated.join(', '), 'utf-8')
+    }
+  })

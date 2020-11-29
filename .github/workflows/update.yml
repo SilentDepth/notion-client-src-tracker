@@ -2,7 +2,7 @@ name: Auto Update
 
 on:
   schedule:
-    - cron: "0 0/8 * * *"
+    - cron: "0 0/6 * * *"
 
 jobs:
   update:
@@ -16,10 +16,10 @@ jobs:
           yarn
           yarn run update
       - run: |
-          git config user.name 'The Tracker'
+          git config user.name 'Bot Penguin'
           git config user.email ''
           git remote set-url origin https://SilentDepth:$GITHUB_TOKEN@github.com/SilentDepth/notion-client-src-tracker.git
           git add .
-          git commit -m 'auto-update' && git push origin HEAD:master || true
+          git commit -m `[ -f UPDATED ] && cat UPDATED` && git push origin HEAD:master || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
