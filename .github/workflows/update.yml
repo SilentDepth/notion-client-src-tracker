@@ -20,6 +20,6 @@ jobs:
           git config user.email ''
           git remote set-url origin https://SilentDepth:$GITHUB_TOKEN@github.com/SilentDepth/notion-client-src-tracker.git
           git add .
-          git commit -m `[ -f UPDATED ] && cat UPDATED` && git push origin HEAD:master || true
+          git commit -m '`[ -f UPDATED ] && cat UPDATED`' && git push origin HEAD:master || true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
