@@ -29,6 +29,11 @@ async function update (mode: string, host: string): Promise<void> {
 
     const notionVersion = js.match(/"Notion (\d+\.\d+)\."/)![1]
     const clientVersion = js.match(/,version:"(\d+\.\d+\.\d+)",/)![1]
+
+    if (mode === 'app') {
+      await fetch(`${process.env.TG_BOT_WEBHOOK_URL}?ver=${notionVersion}.${clientVersion}`).catch()
+    }
+
     const name = `${mode}-${notionVersion}.${clientVersion}-${remoteHash}`
     fs.writeFileSync(`./${name}.min.js`, js, 'utf-8')
 
