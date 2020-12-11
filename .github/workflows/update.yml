@@ -15,6 +15,8 @@ jobs:
       - run: |
           yarn
           yarn run update
+        env:
+          TG_BOT_WEBHOOK_URL: ${{ secrets.TG_BOT_WEBHOOK_URL }}
       - run: |
           git config user.name 'Bot Penguin'
           git config user.email ''
@@ -22,5 +24,4 @@ jobs:
           git add .
           git commit -m "`[ -f UPDATED ] && cat UPDATED`" && git push origin HEAD:master || true
         env:
-          TG_BOT_WEBHOOK_URL: ${{ secrets.TG_BOT_WEBHOOK_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
