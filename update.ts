@@ -63,8 +63,8 @@ async function update (mode: string, host: string): Promise<void> {
 }
 
 Promise.resolve()
-  .then(() => update('app', 'https://www.notion.so'))
-  .then(() => update('dev', 'https://dev.notion.so'))
+  .then(() => update('app', 'https://www.notion.so/login'))
+  .then(() => update('dev', 'https://dev.notion.so/login'))
   .then(() => {
     if (updated.length) {
       fs.writeFileSync('./UPDATED', updated.join(', '), 'utf-8')
