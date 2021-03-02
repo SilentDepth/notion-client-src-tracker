@@ -4,6 +4,9 @@ import fetch from 'node-fetch'
 import cheerio from 'cheerio'
 import prettier from 'prettier'
 
+import clean from './clean'
+import {compareVersion, extractVersion} from './utils'
+
 const updated: string[] = []
 
 async function update (mode: string, host: string): Promise<void> {
@@ -11,17 +14,8 @@ async function update (mode: string, host: string): Promise<void> {
 
   const lastHash = fs.readdirSync(__dirname)
     .filter(name => name.startsWith(mode) && name.endsWith('.min.js'))
-    .sort((a, b) => {
-      const aVer = a.match(/^\w+-(\d+\.\d+\.\d+\.\d+\.\d+)/)![1].split('.').map(Number)
-      const bVer = b.match(/^\w+-(\d+\.\d+\.\d+\.\d+\.\d+)/)![1].split('.').map(Number)
-      for (let i = 0; i < aVer.length; i++) {
-        const _a = aVer[i]
-        const _b = bVer[i]
-        if (_a < _b) return 1
-        else if (_a > _b) return -1
-      }
-      return 0
-    })[0]
+    .sort((a, b) => compareVersion(extractVersion(a)!, extractVersion(b)!))
+    .slice(-1)[0]
     .match(/([0-9a-f]{20})\.min\.js$/)?.[1] ?? null
 
   if (lastHash) {
@@ -56,6 +50,8 @@ async function update (mode: string, host: string): Promise<void> {
     fs.writeFileSync(`./${name}.js`, formatted, 'utf-8')
 
     updated.push(`${mode}-${notionVersion}.${clientVersion}`)
+
+    clean(mode)
     console.log('✔')
   } else {
     console.log('No update')
