@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import url from 'url'
 import fetch from 'node-fetch'
 import cheerio from 'cheerio'
@@ -12,7 +13,7 @@ const updated: string[] = []
 async function update (mode: string, host: string): Promise<void> {
   console.log('Mode:', mode, `(${host})`)
 
-  const lastHash = fs.readdirSync(__dirname)
+  const lastHash = fs.readdirSync(path.join(__dirname, 'files'))
     .filter(name => name.startsWith(mode) && name.endsWith('.min.js'))
     .sort((a, b) => compareVersion(extractVersion(a)!, extractVersion(b)!))
     .slice(-1)[0]
