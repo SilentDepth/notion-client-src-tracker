@@ -35,8 +35,8 @@ async function update (mode: string, host: string): Promise<void> {
     console.log('Fetching client JS...')
     const js = await fetch(url.resolve(host, appJsUri)).then(res => res.text())
 
-    const notionVersion = js.match(/"Notion (\d+\.\d+)\."/)![1]
-    const clientVersion = js.match(/,version:"(\d+(\.\d+)*)",/)![1]
+    const notionVersion = js.match(/("|')Notion (\d+\.\d+)\.\1/)![2]
+    const clientVersion = js.match(/,version:("|')(\d+(\.\d+){2,})\1,/)![2]
 
     if (mode === 'app') {
       await fetch(`${process.env.TG_BOT_WEBHOOK_URL}?ver=${notionVersion}.${clientVersion}`).catch()
