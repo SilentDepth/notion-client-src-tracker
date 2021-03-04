@@ -7,7 +7,7 @@ export function compareVersion (a: string, b: string): number {
   const bNums = b.split('.').map(Number)
   for (const [idx, _a] of aNums.entries()) {
     const _b = bNums[idx]
-    if (_b) {
+    if (_b !== undefined) {
       if (_a === _b) continue
       return Math.sign(_a - _b)
     } else {

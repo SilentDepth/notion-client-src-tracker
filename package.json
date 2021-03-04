@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "update": "ts-node update.ts"
+    "update": "ts-node update.ts",
+    "desktop": "ts-node check-desktop-version.ts"
   },
   "volta": {
     "node": "14.16.0",
