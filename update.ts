@@ -8,12 +8,13 @@ import prettier from 'prettier'
 import clean from './clean'
 import {compareVersion, extractVersion} from './utils'
 
+const DIR = path.join(__dirname, 'files')
 const updated: string[] = []
 
 async function update (mode: string, host: string): Promise<void> {
   console.log('Mode:', mode, `(${host})`)
 
-  const lastHash = fs.readdirSync(path.join(__dirname, 'files'))
+  const lastHash = fs.readdirSync(DIR)
     .filter(name => name.startsWith(mode) && name.endsWith('.min.js'))
     .sort((a, b) => compareVersion(extractVersion(a)!, extractVersion(b)!))
     .slice(-1)[0]
@@ -44,11 +45,11 @@ async function update (mode: string, host: string): Promise<void> {
     }
 
     const name = `${mode}-${notionVersion}.${clientVersion}-${remoteHash}`
-    fs.writeFileSync(`./${name}.min.js`, js, 'utf-8')
+    fs.writeFileSync(path.join(DIR, `${name}.min.js`), js, 'utf-8')
 
     console.log('Generating formatted source...')
     const formatted = prettier.format(js, await prettier.resolveConfig(await prettier.resolveConfigFile(__filename) as string) ?? undefined)
-    fs.writeFileSync(`./${name}.js`, formatted, 'utf-8')
+    fs.writeFileSync(path.join(DIR, `${name}.js`), formatted, 'utf-8')
 
     updated.push(`${mode}-${notionVersion}.${clientVersion}`)
 
