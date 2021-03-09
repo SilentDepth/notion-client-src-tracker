@@ -22,6 +22,8 @@ export default async function checkDesktopVersion () {
   if (updated.length) {
     fs.writeFileSync('./last-check.json', JSON.stringify(lastCheck), 'utf-8')
   }
+
+  console.log('✔')
   return updated
 }
 
